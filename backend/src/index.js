@@ -8,8 +8,10 @@ import notesRoute from "../routes/note.route.js";
 const app = express();
 
 connectToDb(); //connected to the database mongodb
-
 const PORT = process.env.PORT || 3000;
+
+//parse it into a JavaScript object
+app.use(express.json());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/notes", notesRoute);
