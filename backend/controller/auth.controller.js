@@ -56,6 +56,40 @@ export const register = async (req, res) => {
   }
 };
 
-export const login = (req, res) => {
-  res.send("hey from register");
+export const login = async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Email and password are required" });
+  }
+
+  const user = await User.findOne({ email: email.toLowerCase() });
+
+  if (!user) {
+    return res
+      .status(401)
+      .json({ success: false, message: "User already exist" });
+  }
+
+  const match = await bcrypt.compare(password, user.password);
+
+  if (!match) {
+    return res
+      .status(401)
+      .json({ success: false, message: "Password doesn't match" });
+  }
+
+  const token = generateToken(user._id);
+
+  return res.status(201).json({
+    success: true,
+    message: "Logged in Successfully",
+    token,
+    user: {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+    },
+  });
 };
