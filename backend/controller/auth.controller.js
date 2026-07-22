@@ -102,7 +102,7 @@ export const getDetails = async (req, res) => {
         .status(404)
         .json({ success: false, message: "Invalid email or password" });
     }
-    res.json({
+    return res.json({
       user: { id: user._id, name: user.name, email: user.email },
     });
   } catch (error) {

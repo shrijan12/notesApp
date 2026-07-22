@@ -12,6 +12,7 @@ const PORT = process.env.PORT || 3000;
 
 //parse it into a JavaScript object
 app.use(express.json());
+app.use(cors());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/notes", notesRoute);
