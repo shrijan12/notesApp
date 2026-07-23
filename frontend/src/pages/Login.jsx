@@ -1,11 +1,20 @@
 import React from "react";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <div className="auth-page">
       <form className="auth-form" onSubmit={handleSubmit}>
         <h2>Login</h2>
-        {error && <p className="error">{error}</p>}
         <input
           type="email"
           placeholder="Email"
