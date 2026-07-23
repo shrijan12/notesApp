@@ -1,14 +1,23 @@
 import React from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import useAuthStore from "../store/useAuthStore";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const login = useAuthStore((state) => state.login);
+  const register = useAuthStore((state) => state.register);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmitting(true);
+    const success = await login({ email, password });
+    setSubmitting(false);
+    if (success) navigate("/notes");
   };
 
   return (

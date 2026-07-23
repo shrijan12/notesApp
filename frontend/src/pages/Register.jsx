@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import useAuthStore from "../store/useAuthStore";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -8,14 +9,24 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+
+  const register = useAuthStore((state) => state.register);
+  const error = useAuthStore((state) => state.error);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmitting(true);
+    const success = await register({ name, email, password });
+    setSubmitting(false);
+    if (success) navigate("/notes");
   };
 
   return (
     <div className="auth-page">
       <form className="auth-form" onSubmit={handleSubmit}>
         <h2>Create an account</h2>
+        {error && <p className="error">{error}</p>}
         <input
           type="text"
           placeholder="Name"
